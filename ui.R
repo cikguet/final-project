@@ -131,10 +131,20 @@ typeof(list_data_html3)
 length(list_data_html3)
 str(list_data_html3)
 
-...... and more         
-                         "))
+...... and more ")
+ )
                    ),
+
+                    wellPanel(
+                      h3('Github'),
+                      pre('https://github.com/cikguet/final-project')
+                    ),
                    
+                   wellPanel(
+                     h3('Shiny Dashboard'),
+                     pre('https://eds2.shinyapps.io/final_project2/')
+                   ),
+ 
                    wellPanel(
                      h3('R Library'),
                      #tag$li('rvest shiny\n ggplot2\n lubridate\n devtools\n dplyr\n DT\n tm\n SnowballC\n wordcloud\n RColorBrewer\n scales\n')

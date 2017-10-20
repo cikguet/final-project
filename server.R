@@ -12,22 +12,22 @@ library(dplyr)
 
 # load dataset
 imdb_raw <- read.csv("imdb_2017_raw_10000.csv")
+imdb_raw_lm <- read.csv("imdb_2017_clean_10000.csv")
 
-imdb_raw_lm <- imdb_raw
-# replace 0 gross revenue to min revenue of 0.01
-imdb_raw_lm[imdb_raw_lm$revenue==0,] <- mean(imdb_raw_lm$revenue, na.rm = TRUE)
-
-# replace NA rating to mean value
-imdb_raw_lm[c("rating")][is.na(imdb_raw_lm[c("rating")])] <- mean(imdb_raw_lm$rating, trim = 0.1, na.rm = TRUE)
-
-# replace NA vote to mean value
-imdb_raw_lm[c("vote")][is.na(imdb_raw_lm[c("vote")])] <- mean(imdb_raw_lm$vote, trim = 0.1, na.rm = TRUE)
-
-# replace NA metascore to mean value
-imdb_raw_lm[c("metascore")][is.na(imdb_raw_lm[c("metascore")])] <- mean(imdb_raw_lm$metascore, trim = 0.1, na.rm = TRUE)
-
-# replace NA runtime to mean value
-imdb_raw_lm[c("runtime")][is.na(imdb_raw_lm[c("runtime")])] <- mean(imdb_raw_lm$runtime, trim = 0.1, na.rm = TRUE)
+# # replace 0 gross revenue to min revenue of 0.01
+# imdb_raw_lm[imdb_raw_lm$revenue==0,] <- mean(imdb_raw_lm$revenue, na.rm = TRUE)
+# 
+# # replace NA rating to mean value
+# imdb_raw_lm[c("rating")][is.na(imdb_raw_lm[c("rating")])] <- mean(imdb_raw_lm$rating, trim = 0.1, na.rm = TRUE)
+# 
+# # replace NA vote to mean value
+# imdb_raw_lm[c("vote")][is.na(imdb_raw_lm[c("vote")])] <- mean(imdb_raw_lm$vote, trim = 0.1, na.rm = TRUE)
+# 
+# # replace NA metascore to mean value
+# imdb_raw_lm[c("metascore")][is.na(imdb_raw_lm[c("metascore")])] <- mean(imdb_raw_lm$metascore, trim = 0.1, na.rm = TRUE)
+# 
+# # replace NA runtime to mean value
+# imdb_raw_lm[c("runtime")][is.na(imdb_raw_lm[c("runtime")])] <- mean(imdb_raw_lm$runtime, trim = 0.1, na.rm = TRUE)
 
 
 
@@ -181,19 +181,20 @@ shinyServer(function(input, output) {
   })
   
   output$lm_summary <- renderPrint({
-    fit <- lm(rating ~ revenue + vote + runtime, data = imdb_raw_lm)
+    fit <- glm(rating ~ revenue + vote + runtime, data = imdb_raw_lm)
     summary(fit)
+    
   })
   
   output$lm_anova <- renderPrint({
-    fit <- lm(rating ~ revenue + vote + runtime, data = imdb_raw_lm)
+    fit <- glm(rating ~ revenue + vote + runtime, data = imdb_raw_lm)
     anova(fit)
   })
   
   output$predict_output <- renderText({
     
     #input$predict
-    fit <- lm(rating ~ runtime, data = imdb_raw_lm)
+    fit <- glm(rating ~ runtime, data = imdb_raw_lm)
     
     predict(fit,data.frame(runtime=input$predict))
   })
